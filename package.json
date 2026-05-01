@@ -1,0 +1,57 @@
+{
+  "name": "ai-stack",
+  "version": "1.1.0",
+  "description": "Unified AI workspace — all your neural agents in one place",
+  "main": "main.js",
+  "author": "VargKernel",
+  "license": "MIT",
+  "homepage": "",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --inspect",
+    "build": "electron-builder --linux --win",
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win",
+    "build:all": "electron-builder --linux --win"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.aistack.app",
+    "productName": "AI-Stack",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "assets/**",
+      "node_modules/**"
+    ],
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Utility",
+      "icon": "assets/icon.png",
+      "executableName": "ai-stack",
+      "synopsis": "Unified AI workspace",
+      "description": "Access all your AI agents — ChatGPT, Claude, DeepSeek, Gemini and more — from a single desktop app with persistent sessions."
+    },
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico"
+    }
+  }
+}
