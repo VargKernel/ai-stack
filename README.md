@@ -24,7 +24,7 @@ Chat with ChatGPT, Claude, DeepSeek, Gemini, and Grok side‑by‑side, each kee
 Make sure you have **Node.js 18+** and **npm** installed.
 
 ```bash
-git clone <your-repo-url> ai-stack
+git clone https://github.com/VargKernel/ai-stack
 cd ai-stack
 npm install
 npm start          # run the app in development mode
