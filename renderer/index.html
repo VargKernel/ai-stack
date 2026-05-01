@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Stack</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-dark">
+
+  <!-- ── Offline banner ───────────────────── -->
+  <div class="offline-banner hidden" id="offline-banner">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M3 3l14 14M8.5 5.5A6 6 0 0116 10m-1.5 3A6 6 0 014 10m3 3a3 3 0 014-2.83M10 14v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    No Internet Connection — check your network
+  </div>
+
+  <!-- ── Titlebar ──────────────────────────── -->
+  <div class="titlebar" id="titlebar">
+    <div class="titlebar-app-name">AI-Stack</div>
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-buttons">
+      <button class="tb-btn tb-min"   id="btn-min"   title="Minimize">
+        <svg viewBox="0 0 12 12"><path d="M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <button class="tb-btn tb-max"   id="btn-max"   title="Maximize">
+        <svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      </button>
+      <button class="tb-btn tb-close" id="btn-close" title="Close">
+        <svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="app-layout">
+
+    <!-- ── Sidebar ───────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo — click to go home -->
+      <div class="sidebar-logo" id="logo-home" title="Go to home screen">
+        <div class="logo-icon">
+          <img src="../assets/icon.png" alt="AI-Stack" style="width:100%; height:100%; object-fit:contain;" />
+        </div>
+        <span class="logo-text">AI-Stack</span>
+        <button class="sidebar-toggle" id="sidebar-toggle" title="Collapse sidebar">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Reopen chevron (collapsed state only) -->
+      <button class="sidebar-reopen" id="sidebar-reopen" title="Expand sidebar">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <!-- Search -->
+      <div class="sidebar-search" id="sidebar-search-wrap">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" placeholder="Search agents…" autocomplete="off" />
+      </div>
+
+      <!-- Agent list (populated by app.js) -->
+      <nav class="agent-list" id="agent-list"></nav>
+
+      <!-- Bottom icons -->
+      <div class="sidebar-bottom">
+        <button class="sidebar-icon-btn" id="theme-btn" title="Change theme">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="sidebar-icon-btn" id="settings-btn" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Main area ──────────────────────────── -->
+    <main class="main-content" id="main-content">
+
+      <!-- Welcome -->
+      <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-inner">
+          <div class="welcome-logo">
+            <img src="../assets/icon.png" alt="AI-Stack" style="width:100%; height:100%; object-fit:contain;" />
+          </div>
+          <h1 class="welcome-title">AI-Stack</h1>
+          <p class="welcome-sub">Your unified AI workspace.<br/>Select an agent from the sidebar to begin.</p>
+          <div class="welcome-chips" id="welcome-chips"></div>
+          <div class="welcome-hotkeys" id="welcome-hotkeys"></div>
+        </div>
+      </div>
+
+      <!-- Offline screen -->
+      <div class="offline-screen hidden" id="offline-screen">
+        <div class="offline-inner">
+          <div class="offline-icon">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+              <path d="M10 10l44 44M22 18A18 18 0 0148 40M16 24a26 26 0 0130 24M32 46v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2>No Internet Connection</h2>
+          <p>Check your network and try again.</p>
+          <button class="offline-retry" id="offline-retry">Retry Connection</button>
+        </div>
+      </div>
+
+      <!-- Webview area -->
+      <div class="webview-container hidden" id="webview-container">
+        <div class="tab-bar" id="tab-bar"></div>
+        <div class="webviews" id="webviews">
+          <div id="webview-loading-overlay" class="webview-loading-overlay hidden">
+            <div class="spinner"></div>
+          </div>
+        </div>
+        <div class="nav-bar" id="nav-bar">
+          <button class="nav-btn" id="nav-back"    title="Back">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M13 4L7 10l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="nav-btn" id="nav-forward" title="Forward">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="nav-btn" id="nav-reload"  title="Reload">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10a6 6 0 106-6H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8 7L5 4l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="nav-url" id="nav-url-display"></div>
+          <button class="nav-btn" id="nav-clear-session" title="Clear session & reload">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Theme modal ──────────────────────── -->
+  <div class="modal-overlay hidden" id="theme-modal">
+    <div class="modal theme-modal">
+      <h2>Choose Theme</h2>
+      <div class="theme-grid" id="theme-grid"></div>
+      <button class="modal-close" id="theme-modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- ── Settings modal ──────────────────── -->
+  <div class="modal-overlay hidden" id="settings-modal">
+    <div class="modal settings-modal">
+      <h2>Settings</h2>
+
+      <!-- Sessions -->
+      <div class="settings-section">
+        <h3>Agent Sessions</h3>
+        <p>Clear the saved login session for a specific agent. You will need to log in again.</p>
+        <div class="sessions-list" id="sessions-list"></div>
+      </div>
+
+      <!-- Data management -->
+      <div class="settings-section">
+        <h3>Data &amp; Storage</h3>
+        <p>All data is stored locally on your machine.</p>
+        <div class="data-path-row">
+          <code id="data-location-path">Loading…</code>
+          <button class="data-path-copy" id="data-path-copy" title="Copy path">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M13 7V5a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="danger-zone">
+          <div class="danger-zone-label">Danger Zone</div>
+          <div class="danger-zone-desc">Clears <strong>all sessions</strong>, preferences, theme and tab history. The app will restart with factory defaults.</div>
+          <button class="danger-btn" id="clear-all-btn">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 5h12M8 5V3h4v2M6 5l1 11h6l1-11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Clear All Data &amp; Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Keyboard shortcuts -->
+      <div class="settings-section">
+        <h3>Keyboard Shortcuts</h3>
+        <table class="shortcuts-table">
+          <tr><td><kbd>Ctrl</kbd> + <kbd>F</kbd></td><td>Focus agent search</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td>Reload active agent</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Close modal / dialogs</td></tr>
+        </table>
+      </div>
+
+      <!-- About -->
+      <div class="settings-section">
+        <h3>About</h3>
+        <p>AI-Stack v1.2.0 — Unified AI workspace<br/>
+        Built with Electron · Open source · MIT License</p>
+      </div>
+
+      <button class="modal-close" id="settings-modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- ── Confirm dialog ───────────────────── -->
+  <div class="modal-overlay hidden" id="confirm-modal">
+    <div class="modal confirm-modal">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M20 12v10M20 27v1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+      <h2 id="confirm-title">Are you sure?</h2>
+      <p id="confirm-message">This action cannot be undone.</p>
+      <div class="confirm-buttons">
+        <button class="confirm-cancel" id="confirm-cancel">Cancel</button>
+        <button class="confirm-ok danger-btn" id="confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
